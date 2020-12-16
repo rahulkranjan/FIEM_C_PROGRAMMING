@@ -1,12 +1,27 @@
 #include <stdio.h>
-#include <conio.h>
+#include <stdlib.h>
 
+// Create a node
 struct Node
 {
     int item;
     struct Node *next;
 };
 
+void insertAtBeginning(struct Node **ref, int data)
+{
+    // Allocate memory to a node
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+
+    // insert the item
+    new_node->item = data;
+    new_node->next = (*ref);
+
+    // Move head to new node
+    (*ref) = new_node;
+}
+
+// Insert a node after a node
 void insertAfter(struct Node *node, int data)
 {
     if (node == NULL)
@@ -52,16 +67,18 @@ void deleteNode(struct Node **ref, int key)
         free(temp);
         return;
     }
-
+    // Find the key to be deleted
     while (temp != NULL && temp->item != key)
     {
         prev = temp;
         temp = temp->next;
     }
 
+    // If the key is not present
     if (temp == NULL)
         return;
 
+    // Remove the node
     prev->next = temp->next;
 
     free(temp);
@@ -77,20 +94,52 @@ void printList(struct Node *node)
     }
 }
 
+// Driver program
 int main()
 {
     struct Node *head = NULL;
+    int n, m, val;
+    char response[2];
+    printf("1.Single linkedlist\n2.Double circular Linked List:");
+    scanf("%d", &n);
+    if (n == 1)
+    {
+        do
+        {
+            printf("1.Insert at the end\n2.Insert at Beginning\n3.Insert in the middle:\n");
+            scanf("%d", &m);
+            if (m == 1)
+            {
+                printf("Enter the value :");
+                scanf("%d", &val);
+                insertAtEnd(&head, val);
+            }
+            else if (m == 2)
+            {
+                printf("Enter the value :");
+                scanf("%d", &val);
+                insertAtBeginning(&head, val);
+            }
+            else if (m == 3)
+            {
+                printf("Enter the value :");
+                scanf("%d", &val);
+                insertAfter(head->next, val);
+            }
+            else
+            {
+                printf("Wrong Input\n");
+                printf("Want to try again y/n:");
+                scanf("%s", response);
+            }
+            printf("Linked list: ");
+            printList(head);
+            printf("\nWant to try again: y/n :");
+            scanf("%s", response);
+        } while (response[2] = 'y');
+    }
 
-    insertAtEnd(&head, 1);
-    insertAtBeginning(&head, 2);
-    insertAtBeginning(&head, 3);
-    insertAtEnd(&head, 4);
-    insertAfter(head->next, 5);
-
-    printf("Linked list: ");
-    printList(head);
-
-    printf("\nAfter deleting an element: ");
-    deleteNode(&head, 3);
-    printList(head);
+    // printf("\nAfter deleting an element: ");
+    // deleteNode(&head, 3);
+    // printList(head);
 }
