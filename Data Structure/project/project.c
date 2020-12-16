@@ -1,27 +1,30 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Create a node
 struct Node
 {
     int item;
     struct Node *next;
 };
 
+struct Node1
+{
+    int data;
+    struct Node1 *next;
+    struct Node1 *prev;
+};
+
 void insertAtBeginning(struct Node **ref, int data)
 {
-    // Allocate memory to a node
+
     struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
 
-    // insert the item
     new_node->item = data;
     new_node->next = (*ref);
 
-    // Move head to new node
     (*ref) = new_node;
 }
 
-// Insert a node after a node
 void insertAfter(struct Node *node, int data)
 {
     if (node == NULL)
@@ -67,18 +70,16 @@ void deleteNode(struct Node **ref, int key)
         free(temp);
         return;
     }
-    // Find the key to be deleted
+
     while (temp != NULL && temp->item != key)
     {
         prev = temp;
         temp = temp->next;
     }
 
-    // If the key is not present
     if (temp == NULL)
         return;
 
-    // Remove the node
     prev->next = temp->next;
 
     free(temp);
@@ -92,12 +93,83 @@ void printList(struct Node *node)
         node = node->next;
     }
 }
+// ----------------------//
+// double linkedlist     //
+// ----------------------//
+
+void push(struct Node1 **head_ref, int new_data)
+{
+
+    struct Node1 *new_node = (struct Node1 *)malloc(sizeof(struct Node1));
+
+    new_node->data = new_data;
+
+    new_node->next = (*head_ref);
+    new_node->prev = NULL;
+
+    if ((*head_ref) != NULL)
+        (*head_ref)->prev = new_node;
+
+    (*head_ref) = new_node;
+}
+
+void insertAfter1(struct Node1 *prev_node, int new_data)
+{
+
+    if (prev_node == NULL)
+    {
+        printf("the given previous node cannot be NULL");
+        return;
+    }
+
+    struct Node1 *new_node = (struct Node1 *)malloc(sizeof(struct Node1));
+
+    new_node->data = new_data;
+
+    new_node->next = prev_node->next;
+
+    prev_node->next = new_node;
+
+    new_node->prev = prev_node;
+
+    if (new_node->next != NULL)
+        new_node->next->prev = new_node;
+}
+
+void append(struct Node1 **head_ref, int new_data)
+{
+
+    struct Node1 *new_node = (struct Node1 *)malloc(sizeof(struct Node1));
+
+    struct Node1 *last = *head_ref;
+
+    new_node->data = new_data;
+
+    new_node->next = NULL;
+
+    if (*head_ref == NULL)
+    {
+        new_node->prev = NULL;
+        *head_ref = new_node;
+        return;
+    }
+
+    while (last->next != NULL)
+        last = last->next;
+
+    last->next = new_node;
+
+    new_node->prev = last;
+
+    return;
+}
 
 int main()
 {
     struct Node *head = NULL;
-    int n, m, val, p, a;
-    char response[2];
+    struct Node1 *head1 = NULL;
+    int n, m, val, p, a, response;
+    // char ;
     printf("1.Single linkedlist\n2.Double circular Linked List:");
     scanf("%d", &n);
     if (n == 1)
@@ -131,18 +203,16 @@ int main()
                 else
                 {
                     printf("Wrong Input\n");
-                    printf("Want to try again y/n:");
-                    scanf("%s", response);
                 }
                 printf("Linked list: ");
                 printList(head);
-                printf("\nWant to try again: y/n :\n\n");
-                scanf("%s", response);
-            } while (response[2] = 'y');
+                printf("\nWant to try again: 0/1 :\n\n");
+                scanf("%d", &response);
+            } while (response == 0);
         }
         else if (p == 2)
         {
-            // printf("\nAfter deleting an element: ");
+
             printf("Enter the element to be deleted:");
             scanf("%d", &a);
             deleteNode(&head, a);
@@ -154,7 +224,48 @@ int main()
         }
     }
 
-    // printf("\nAfter deleting an element: ");
-    // deleteNode(&head, 3);
-    // printList(head);
+    else if (n == 2)
+    {
+        printf("\n\n1.Insertion\n2.Deletion");
+        scanf("%d", &p);
+        if (p == 1)
+        {
+            do
+            {
+                printf("\n\n1.Insert at the end\n2.Insert at Beginning\n3.Insert in the middle:\n");
+                scanf("%d", &m);
+                if (m == 1)
+                {
+                    printf("Enter the value :");
+                    scanf("%d", &val);
+                    append(&head1, val);
+                }
+                else if (m == 2)
+                {
+                    printf("Enter the value :");
+                    scanf("%d", &val);
+                    push(&head1, val);
+                }
+                else if (m == 3)
+                {
+                    printf("Enter the value :");
+                    scanf("%d", &val);
+                    insertAfter1(head1->next, val);
+                }
+                else
+                {
+                    printf("Wrong Input\n");
+                }
+                printf("Double Linkedlist: ");
+
+                printf("\nWant to try again: 0/1 :\n\n");
+                scanf("%d", &response);
+            } while (response == 0);
+        }
+
+        else
+        {
+            printf("Worng Input");
+        }
+    }
 }
