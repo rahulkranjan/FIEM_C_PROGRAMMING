@@ -96,45 +96,62 @@ void printList(struct Node *node)
 int main()
 {
     struct Node *head = NULL;
-    int n, m, val;
+    int n, m, val, p, a;
     char response[2];
     printf("1.Single linkedlist\n2.Double circular Linked List:");
     scanf("%d", &n);
     if (n == 1)
     {
-        do
+        printf("\n\n1.Insertion\n2.Deletion");
+        scanf("%d", &p);
+        if (p == 1)
         {
-            printf("1.Insert at the end\n2.Insert at Beginning\n3.Insert in the middle:\n");
-            scanf("%d", &m);
-            if (m == 1)
+            do
             {
-                printf("Enter the value :");
-                scanf("%d", &val);
-                insertAtEnd(&head, val);
-            }
-            else if (m == 2)
-            {
-                printf("Enter the value :");
-                scanf("%d", &val);
-                insertAtBeginning(&head, val);
-            }
-            else if (m == 3)
-            {
-                printf("Enter the value :");
-                scanf("%d", &val);
-                insertAfter(head->next, val);
-            }
-            else
-            {
-                printf("Wrong Input\n");
-                printf("Want to try again y/n:");
+                printf("\n\n1.Insert at the end\n2.Insert at Beginning\n3.Insert in the middle:\n");
+                scanf("%d", &m);
+                if (m == 1)
+                {
+                    printf("Enter the value :");
+                    scanf("%d", &val);
+                    insertAtEnd(&head, val);
+                }
+                else if (m == 2)
+                {
+                    printf("Enter the value :");
+                    scanf("%d", &val);
+                    insertAtBeginning(&head, val);
+                }
+                else if (m == 3)
+                {
+                    printf("Enter the value :");
+                    scanf("%d", &val);
+                    insertAfter(head->next, val);
+                }
+                else
+                {
+                    printf("Wrong Input\n");
+                    printf("Want to try again y/n:");
+                    scanf("%s", response);
+                }
+                printf("Linked list: ");
+                printList(head);
+                printf("\nWant to try again: y/n :\n\n");
                 scanf("%s", response);
-            }
-            printf("Linked list: ");
+            } while (response[2] = 'y');
+        }
+        else if (p == 2)
+        {
+            // printf("\nAfter deleting an element: ");
+            printf("Enter the element to be deleted:");
+            scanf("%d", &a);
+            deleteNode(&head, a);
             printList(head);
-            printf("\nWant to try again: y/n :");
-            scanf("%s", response);
-        } while (response[2] = 'y');
+        }
+        else
+        {
+            printf("Worng Input");
+        }
     }
 
     // printf("\nAfter deleting an element: ");
