@@ -84,7 +84,6 @@ void deleteNode(struct Node **ref, int key)
     free(temp);
 }
 
-// Print the linked list
 void printList(struct Node *node)
 {
     while (node != NULL)
@@ -94,7 +93,6 @@ void printList(struct Node *node)
     }
 }
 
-// Driver program
 int main()
 {
     struct Node *head = NULL;
